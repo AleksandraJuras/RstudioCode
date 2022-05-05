@@ -1,0 +1,287 @@
+# funkcja zlicza krotności wystąpięń parametru seq
+# wynik w postaci słownika
+import math
+
+
+def m(a, b):
+    return a * b
+
+
+def counter(cn, seq):
+    if cn is None:
+        cn = {}
+
+    for s in seq:
+        cn[s] = cn.get(s, 0) + 1
+    return cn
+# def counter(cn, add, sub=None):
+#     for s in add:
+#         cn[s] = cn.get(s, 0) + 1
+#
+#     if sub is not None:
+#         for s in sub:
+#             cn[s] = cn.get(s, 0) - 1
+#
+#     return cn
+
+
+dictionary = {}
+# print(counter(dictionary, [1, 2, 3, 4, 1, 2, 3, 3,3]))
+# print(counter(dictionary, "Ala ma kota"))
+# print(counter(None, "Ala ma kota"))
+
+# text, n
+# wycinek
+# zbalansowany ciąg każdy element występuje tyle samo razy
+
+
+def zbalansowanie(txt, n, step=1):
+    lista = []
+    for i in range(0, len(txt), step):
+        lista.append(txt[i:n+i])
+    print(lista)
+
+    result = []
+    for i in range(len(lista)):
+        slownik = counter(None, lista[i])
+        slownik = set(slownik.values())
+        if len(slownik) == 1:
+            if i == 0:
+                result.append(i)
+            else:
+                result.append(i*n - step)
+
+    return result
+
+print("========================================\n\n")
+dictionary = {'a': 5, 'b':6}
+print(zbalansowanie("aaababczcddc", 3, 2))
+# print(dictionary)
+# print(counter(dictionary, "aaaa", "bbbcc"))
+# coś tam discard
+def f(a,b,*c):
+    print(a,b,c)
+
+f(5,7)
+f(5,7,9,11)
+
+x=y=list('abcabcde')
+print(x)
+print(y)
+x[:] = set(x)  # x = set(x) dostajemy kopie więc x i y będą różne
+print(x)
+print(y)
+print(x == y)
+
+# Comprehension
+
+notacja = [x**2 for x in range(30) if x % 4 == 3]
+print(notacja)
+
+# wczytac teskst
+# jedną litere
+# dzielimy na słowa
+# odfiltrowujemy 1 litere przty użyciu comprehesion
+
+tekst = "jakis przykladowy tekst do odfiltrowania tekst"
+litera = "t"
+tekst = tekst.split(" ")
+print(tekst)
+wynik = [x for x in tekst if litera == x[0]]
+print(wynik)
+
+# dla każdego słowa co ma wiećej niż 3
+# znaki wybieramy te litery oraz gromadzimy ale mają być unikalne bez powtórzeń
+print()
+print("################################")
+wynik2 = set([x[:3] for x in tekst if len(x) > 2])
+print(tekst)
+print(wynik2)
+
+#
+lista_par = [tekst[i:i+2] for i in range(0, len(tekst), 2)]
+print(lista_par)
+
+
+# Comprehension dla słowników
+print("\nComprehension dla słowników\n")
+slownik = {y.upper(): x for x, y in lista_par}
+print(slownik)
+slownik2 = {y: x for x, y in slownik.items()}
+print(slownik2)
+
+# tabliczka mnożenia jako listę list list comprehension w list comprehension
+
+mnozenie = [[i*j for j in range(10)] for i in range(10)]
+
+for i in mnozenie:
+    print(i)
+
+import random
+
+#random.seed(8)
+# x y r
+# x y -5, 5
+# r 0,2 0,5
+X = [random.uniform(-5, 5) for _ in range(8)]
+Y = [random.uniform(-5, 5) for _ in range(8)]
+R = [random.uniform(0, 5) for _ in range(8)]
+print(X)
+print(Y)
+print(R)
+
+def aim(x,y,r):
+    return x**2 + y**2<r**2
+
+for i in range(8):
+    print(aim(X[i], Y[i], R[i]))
+
+# sprawdzamy czy liczba jest liczbą pierwszą
+# is plain czy jest podzielna przez jaką kolwiem liczbę pomiędzy pierwiastkiem z liczby a 1
+def is_plain(n):
+    if n == 1 or n == 0:
+        return False
+
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n%i == 0:
+            return False
+    return True
+
+print("#####################")
+print("Czy jest liczbą pierwszą: ", is_plain(7))
+
+
+a = {i:is_plain(i) for i in range(10)}
+print(a)
+
+# dla danej liczby n znajduje wszystkie liczby pierwsze od niej i zwraca jej listę
+n = 10
+print([i for i in range(n) if is_plain(i)])
+
+
+def is_plain2(n):
+    lista = []
+    for i in range(2, n):  # liczba ktora jest sprawdzana czy jest pierwszą
+        for j in lista:  # liczby pierwsze które już znaleźliśmy, jeśli lista pusta for odrazu się skończy
+            if i % j == 0:
+                break
+        else:
+            lista.append(i)
+    return lista
+
+
+print("\n**********************\n")
+print(is_plain2(10))
+
+# zoptymalizować do liczb pierwszych przeglądamy tylko te które są sklasyfikowane jako pierwsze
+
+print("###################################################")
+
+
+def f(a, b, c=2, d=3, e='z'):
+    print(a, b, c, d, e)
+
+
+f(10, 20)
+f(10, b=20)
+# f(a=10,20) nie można tak używać
+
+# def edit(x, y, /): mam za starą wersje
+#     print(x,y)
+
+def cos(a, *b):
+    print(a,b)
+
+cos(1)
+cos(2,6,8)
+
+# napisac fnckje dowolna ilosc parametrów ale co najmneij 2
+# pierwsze 2 parametry kowertować do łańcucha tekstoweg
+# wsyztskie pozostałe parametry na łąńcuch tekstowy
+# i sklejamy
+
+print("############## Sklejanie ####################")
+def sklejanie(a,b,*c):
+    a = str(a)
+    b = str(b)
+    for i in c:
+        i = str(i)
+        print(a + i + b)
+
+sklejanie(2,3,4,5,6,7,8)
+
+# tekst i sq jest listą
+# dzielimy na słowa
+# dołączamy do listy
+
+def G(txt, sq = None): # jeśli sq będzie miało paramter domyślny listę do będzie dopisywać do tej lsity
+    if sq is None:
+        sq = []  # dzięki None i temu zabiegowi powstaje nowy obiekt, nowa lista
+    txt = txt.split()
+    sq.extend(txt)
+    return sq
+d = []
+print(G("ala ma kota a kot ma ale"))
+print(G("dopisze sie do tablicy" ))
+
+import time
+
+def z(sq = []): # jeśli sq będzie miało paramter domyślny listę do będzie dopisywać do tej lsity
+    sq.append(time.time())
+    return sq
+
+for _ in range(10):
+    z()
+    time.sleep(0.00002)
+
+a = z()
+for i in range(len(a)- 1):
+    tmp = a[i] - a[i+1]
+    print(tmp)
+
+
+def is_prime(n, sq = []):
+    if len(sq) < 1: # jeśli lista jest pusta
+        sq.append(2)
+        sq.append([])
+    if sq[0] < n: # dla liczby n większej od zapamiętanej
+        for i in range(sq[0] , n):  # sprawdzamy brakujące liczby pierwsze
+            for j in sq[1]:
+                if i % j == 0:
+                    break
+            else:
+                sq[1].append(i)
+        sq[0] = n
+        lista = sq[1]
+    else: # dla liczby n mniejszej lub równej od zapamiętanej
+        lista = [i for i in sq[1] if i < n]
+    return lista
+
+print(is_prime(10))
+print(is_prime(20))
+print(is_prime(6))
+
+
+def f(a, b):
+    return a**2 + b**2
+
+
+a = [0.5, 1, 2, 1.5]
+b = [-2, 0.5, 0.5, 1]
+
+print(list(zip(a,b))) # zip łączy dwie list w krotki
+
+for z in zip(a,b):
+    print("Wynik wynosi:", f(*z)) # "*" wypakowuje z krotki
+
+# trzy wektory liczb losowych
+X = [random.uniform(-5, 5) for _ in range(8)]
+Y = [random.uniform(-5, 5) for _ in range(8)]
+R = [random.uniform(0, 5) for _ in range(8)]
+
+
+def aim(x, y, r):
+    return x**2 + y**2 < r**2
+
+wynik = [aim(*a) for a in zip(X, Y, R)]
+print(wynik)
